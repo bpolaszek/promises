@@ -69,6 +69,12 @@ class PromiseTest extends TestCase
         $this->assertEquals('10', $p->wait());
     }
 
+    public function testInvokesWaitFunctionWithInjectedPromise()
+    {
+        $p = new Promise(function (P\PromiseInterface $p) { $p->resolve('10'); });
+        $this->assertEquals('10', $p->wait());
+    }
+
     /**
      * @expectedException \GuzzleHttp\Promise\RejectionException
      */
