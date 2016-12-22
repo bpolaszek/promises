@@ -231,6 +231,15 @@ function all($promises, $recursive = false)
     )->then(function () use (&$results) {
         ksort($results);
         return $results;
+    })->then(function ($results) use ($recursive, &$promises) {
+        if (true === $recursive && !$promises instanceof \Generator) {
+            foreach ($promises AS $promise) {
+                if (\GuzzleHttp\Promise\PromiseInterface::PENDING === $promise->getState()) {
+                    return all($promises, $recursive);
+                }
+            }
+        }
+        return $results;
     });
 
     if (true === $recursive) {
