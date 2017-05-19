@@ -236,7 +236,7 @@ function all($promises, $recursive = false)
     if (true === $recursive) {
         $promise = $promise->then(function ($results) use ($recursive, &$promises) {
             foreach ($promises AS $promise) {
-                if (\GuzzleHttp\Promise\PromiseInterface::PENDING === $promise->getState()) {
+                if (PromiseInterface::PENDING === $promise->getState()) {
                     return all($promises, $recursive);
                 }
             }
